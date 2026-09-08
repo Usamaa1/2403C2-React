@@ -8,31 +8,46 @@ import './index.css'
 import { ViewProduct } from './Component/ProductsComponent/ViewProduct';
 import { AddProduct } from './Component/ProductsComponent/AddProduct';
 import ImageUploadComponent from './Component/ImageUploadComponent/ImageUploadComponent';
+import { Login } from './Auth/Pages/Login';
+import { Register } from './Auth/Pages/Register';
+import { AuthProvider } from './Auth/MyContext/MyContextAPI';
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Layout,
-    children:[
+    children: [
       {
         index: true,
         Component: ViewProduct
       },
       {
-       path: 'addProduct',
+        path: 'addProduct',
         Component: AddProduct
       },
       {
-       path: 'imageUpload',
+        path: 'imageUpload',
         Component: ImageUploadComponent
       },
+
     ]
+
+  },
+  {
+    path: 'login',
+    Component: Login
+  },
+  {
+    path: 'register',
+    Component: Register
   },
 ]);
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-  <RouterProvider router={router} />,
+    <AuthProvider>
+      <RouterProvider router={router} />,
+    </AuthProvider>
 
   </StrictMode>,
 )

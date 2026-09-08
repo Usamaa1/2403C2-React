@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { Api } from '../../API/Api';
 
 export const ViewProduct = () => {
 
@@ -8,9 +9,7 @@ export const ViewProduct = () => {
 
   const getProducts = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/v1/viewProduct",
-      );
+      const response = await Api.get('/viewProduct');
       console.log(response.data);
 
       setProducts(response.data)
