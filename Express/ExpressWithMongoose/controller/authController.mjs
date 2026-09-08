@@ -30,35 +30,35 @@ export const login = async (req, res) => {
     try {
 
 
-        const {email,password} = req.body;
+        const { email, password } = req.body;
 
-        let isEmailValid = await Users.findOne({email: email});
+        let isEmailValid = await Users.findOne({ email: email });
 
         console.log(isEmailValid);
 
 
-        if(isEmailValid){
-          let isPasswordValid =  bcyrpt.compareSync(password, isEmailValid.password)
-          console.log(isPasswordValid)
+        if (isEmailValid) {
+            let isPasswordValid = bcyrpt.compareSync(password, isEmailValid.password)
+            console.log(isPasswordValid)
 
-            if(isPasswordValid){
+            if (isPasswordValid) {
 
-              let token = jwt.sign({id: isEmailValid._id, username: isEmailValid.username, email: isEmailValid.email},process.env.JWT_SECRET_KEY,{expiresIn: '24h'});
-              console.log(token);
+                let token = jwt.sign({ id: isEmailValid._id, username: isEmailValid.username, email: isEmailValid.email }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+                console.log(token);
 
-              res.cookie('token',token,{maxAge: 1000*60*60*2, httpOnly: true})
+                res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 2, httpOnly: true })
 
-              res.send({message: "User login successfully!",token});
+                res.send({ message: "User login successfully!", token });
 
 
             }
-            else{
-                res.send({message: "Passowrd is invalid!"})
+            else {
+                res.send({ message: "Passowrd is invalid!" })
             }
 
         }
-        else{
-                res.send({message: "User not found!"})
+        else {
+            res.send({ message: "User not found!" })
 
         }
 
@@ -71,3 +71,28 @@ export const login = async (req, res) => {
     }
 }
 
+
+
+export const profile = async (req, res) => {
+    try {
+
+        res.send({
+            user: req.user
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.send({ errorMessage: error })
+    }
+}
+
+
+export const logout = async (req, res) => {
+    try {
+        res.clearCookie('token');
+        res.send('user logout')
+    } catch (error) {
+        console.log(error);
+        res.send({ errorMessage: error })
+    }
+}
